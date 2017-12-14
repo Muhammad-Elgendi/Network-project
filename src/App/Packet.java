@@ -23,11 +23,11 @@ public class Packet {
         line.setStroke(Color.TRANSPARENT);
 
         pt = new PathTransition();
-        pt.setDuration(Duration.millis(8000));
+        pt.setDuration(Duration.millis(10000));
         pt.setPath(line);
         pt.setNode(rectangle);
         pt.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
-        pt.play();
+//        pt.play();
         rectangle.setOnMousePressed(e -> pt.pause());
 //        rectangle.setOnMouseReleased(e -> pt.play());
         container.getChildren().addAll(line,rectangle);

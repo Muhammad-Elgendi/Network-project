@@ -1,5 +1,8 @@
 package App;
 
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -15,14 +18,19 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Line;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
 
 public class Main extends Application {
 
+    public int i;
     public Button startButton;
     public TextField windowSizeTextField;
-    public static int i;
+
     public static void main(String[] args) {
         launch(args);
     }
@@ -150,31 +158,56 @@ public class Main extends Application {
                 int count = Integer.parseInt(windowSizeTextField.getText());
                 ArrayList<Packet> packets = new ArrayList<Packet>();
                 ArrayList<Acknowledgement> acknowledgements = new ArrayList<Acknowledgement>();
-               for (i=0;i< count;i++){
-                    packets.add(i,new Packet());
-                    acknowledgements.add(i,new Acknowledgement());
-                    packetsContainer.add(packets.get(i).getContainer(), i, 0);
-
-                    packets.get(i).getPt().setOnFinished(new EventHandler<ActionEvent>() {
-                        @Override
-                        public void handle(ActionEvent event) {
-                            System.out.println("Packet Received !");
-//                            packetsContainer.add(acknowledgements.get(i).getContainer(), i, 0);
-                            labelsContainer.getChildren().add(new Label("Packet "+i));
-//                            acknowledgements.get(i).getPt().play();
-
-                        }
-                    });
-
-//                    acknowledgements.get(i).getPt().setOnFinished(new EventHandler<ActionEvent>() {
+//                for (i = 0; i < count;i++ ) {
+//                    packets.add(new Packet());
+//                    packetsContainer.add(packets.get(i).getContainer(), i, 0);
+//                    packets.get(i).getPt().play();
+//
+//                    packets.get(i).getPt().setOnFinished(new EventHandler<ActionEvent>() {
 //                        @Override
 //                        public void handle(ActionEvent event) {
-//                            System.out.println("Ack Received !");
-//                            labelsContainer.getChildren().add(new Label("ack "+i));
 //
+//                            System.out.println("Packet Received !");
+//                            labelsContainer.getChildren().add(new Label("Packet " + i));
+//                            System.out.println(i);
+////                            acknowledgements.add(new Acknowledgement());
+////                            packetsContainer.add(acknowledgements.get(i).getContainer(), i, 0);
+////                            acknowledgements.get(i).getPt().play();
+////                            acknowledgements.get(i).getPt().setOnFinished(new EventHandler<ActionEvent>() {
+////                                @Override
+////                                public void handle(ActionEvent event) {
+//
+////                                    labelsContainer.getChildren().add(new Label("Ack " + i));
+////                                }
+////                            });
 //                        }
 //                    });
-                }
+//                }
+
+                Timer timer = new Timer();
+                TimerTask timerTask = new TimerTask() {
+                    int counter = 0;
+                    @Override
+                    public void run() {
+                        System.out.println("Second passed !");
+                        counter++;
+                        if(counter == 6) {
+                            timer.cancel();
+                        }
+                    }
+
+                };
+                timer.scheduleAtFixedRate(timerTask, 1000, 1000);
+
+//                timer.cancel();
+
+//                packets.add(new Packet());
+//                    packetsContainer.add(packets.get(i).getContainer(), i, 0);
+//                    packets.get(i).getPt().play();
+//
+//                Timeline animation = new Timeline(
+//                        new KeyFrame(Duration.millis(1000),));
+//                animation.setCycleCount(Timeline.INDEFINITE);
             }
         });
 
