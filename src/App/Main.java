@@ -22,7 +22,7 @@ public class Main extends Application {
 
     public Button startButton;
     public TextField windowSizeTextField;
-
+    public static int i;
     public static void main(String[] args) {
         launch(args);
     }
@@ -150,32 +150,30 @@ public class Main extends Application {
                 int count = Integer.parseInt(windowSizeTextField.getText());
                 ArrayList<Packet> packets = new ArrayList<Packet>();
                 ArrayList<Acknowledgement> acknowledgements = new ArrayList<Acknowledgement>();
-
-                for (int i = 0; i < count; i++) {
-                    packets.add(new Packet());
-                    acknowledgements.add(new Acknowledgement());
-                    packetsContainer.add(packets.get(i).getContainer(), 0, 0);
+               for (i=0;i< count;i++){
+                    packets.add(i,new Packet());
+                    acknowledgements.add(i,new Acknowledgement());
+                    packetsContainer.add(packets.get(i).getContainer(), i, 0);
 
                     packets.get(i).getPt().setOnFinished(new EventHandler<ActionEvent>() {
                         @Override
                         public void handle(ActionEvent event) {
                             System.out.println("Packet Received !");
-
-                            packetsContainer.add(acknowledgements.get(i).getContainer(), 0, 0);
-                            labelsContainer.getChildren().add(packetLabel);
-                            acknowledgements.get(i).getPt().play();
-
-                        }
-                    });
-
-                    acknowledgements.get(i).getPt().setOnFinished(new EventHandler<ActionEvent>() {
-                        @Override
-                        public void handle(ActionEvent event) {
-                            System.out.println("Ack Received !");
-                            labelsContainer.getChildren().add(ackLabel);
+//                            packetsContainer.add(acknowledgements.get(i).getContainer(), i, 0);
+                            labelsContainer.getChildren().add(new Label("Packet "+i));
+//                            acknowledgements.get(i).getPt().play();
 
                         }
                     });
+
+//                    acknowledgements.get(i).getPt().setOnFinished(new EventHandler<ActionEvent>() {
+//                        @Override
+//                        public void handle(ActionEvent event) {
+//                            System.out.println("Ack Received !");
+//                            labelsContainer.getChildren().add(new Label("ack "+i));
+//
+//                        }
+//                    });
                 }
             }
         });
