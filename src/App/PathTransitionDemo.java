@@ -27,7 +27,7 @@ public class PathTransitionDemo extends Application {
 //        Circle circle = new Circle(125, 100, 50);
 //        circle.setFill(Color.WHITE);
 //        circle.setStroke(Color.BLACK);
-        Line line =new Line();
+        Line line = new Line();
         line.setStartX(0.0f);
         line.setStartY(0.0f);
         line.setEndX(0.0f);
