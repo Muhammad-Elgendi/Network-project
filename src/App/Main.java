@@ -234,9 +234,10 @@ public class Main extends Application {
                 final int[] counter = {0};
                 KeyFrame mainkeyFrame = new KeyFrame(Duration.seconds(6), ev -> {
                     sender.createNewPacket(counter[0]);
-                    sender.setEventFinished(counter[0]);
-                    sender.setEventStopped(counter[0]);
+//                    sender.setEventFinished(counter[0]);
+//                    sender.setEventStopped(counter[0]);
                     sender.sendPacket(counter[0]);
+//                    sender.printArrayList(0);
 
                     counter[0]++;
                 });
