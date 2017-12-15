@@ -28,8 +28,8 @@ public class Sender {
         timeline = new Timeline();
     }
 
-    public void createNewPacket(int i){
-        packets.add(i,new Packet(i));
+    public void createNewPacket(int i,int count){
+        packets.add(i,new Packet(i,count));
     }
 
     public Packet getPacket(int i){

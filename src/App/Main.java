@@ -1,5 +1,6 @@
 package App;
 
+
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
@@ -11,11 +12,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.shape.Line;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -23,6 +22,9 @@ public class Main extends Application {
 
     public static VBox labelsContainer;
     public static GridPane packetsContainer;
+    public static Pane packetWithWin;
+    public static Pane slidingWindowPacketContainer;
+    public static Pane slidingWindowAckContainer;
     public int i;
     public Button startButton;
     public TextField windowSizeTextField;
@@ -141,6 +143,11 @@ public class Main extends Application {
          * Set Packets View
          */
 
+        packetWithWin =new Pane();
+        slidingWindowPacketContainer =new Pane();
+        slidingWindowAckContainer =new Pane();
+        packetWithWin.getChildren().add(slidingWindowPacketContainer);
+        packetWithWin.getChildren().add(slidingWindowAckContainer);
         packetsContainer = new GridPane();
         packetsContainer.setHgap(10);
 
@@ -229,11 +236,11 @@ public class Main extends Application {
 //                timelineTimer.setCycleCount(count);
 //
 //                timelineTimer.play();
-
+                startButton.setDisable(true);
                 Sender sender = new Sender();
                 final int[] counter = {0};
                 KeyFrame mainkeyFrame = new KeyFrame(Duration.seconds(6), ev -> {
-                    sender.createNewPacket(counter[0]);
+                    sender.createNewPacket(counter[0],count);
 //                    sender.setEventFinished(counter[0]);
 //                    sender.setEventStopped(counter[0]);
                     sender.sendPacket(counter[0]);
@@ -247,12 +254,13 @@ public class Main extends Application {
             }
         });
 
+        packetWithWin.getChildren().add(packetsContainer);
 
         /**
          * Viewer Component Set
          */
         viewer.setTop(upperArea);
-        viewer.setCenter(packetsContainer);
+        viewer.setCenter(packetWithWin);
 
         /**
          * Set the scene

@@ -15,8 +15,8 @@ public class Receiver {
         packets=Sender.packets;
     }
 
-    public static void createNewAcknowlegement(int i){
-        acknowledgements.add(i,new Acknowledgement(i));
+    public static void createNewAcknowlegement(int i,int count){
+        acknowledgements.add(i,new Acknowledgement(i,count));
     }
     public static Acknowledgement getAcknowlegement(int i){
         return acknowledgements.get(i);

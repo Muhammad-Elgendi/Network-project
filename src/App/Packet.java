@@ -21,15 +21,27 @@ public class Packet {
 
     public static VBox labelsContainer;
     public static GridPane packetsContainer;
+    public static Pane packetWithWin;
+    public static Pane slidingWindowPacketContainer;
     public Pane container;
     public PathTransition pt;
     public Rectangle rectangle;
     public Text text;
+    public static int slidingFactor =-1;
+    public  Rectangle window;
 
-    public Packet(int i) {
+    public Packet(int i,int count) {
 
         labelsContainer = Main.labelsContainer;
         packetsContainer = Main.packetsContainer;
+        packetWithWin=Main.packetWithWin;
+        slidingWindowPacketContainer=Main.slidingWindowPacketContainer;
+        window = new Rectangle();
+        window.setFill(Color.TRANSPARENT);
+        window.setStroke(Color.BLACK);
+        window.setY(535);
+        window.setHeight(30);
+        window.setWidth((25*count)+((count-1)*10)+count);
         container = new Pane();
         rectangle = new Rectangle(0, 0, 25, 25);
         rectangle.setFill(Color.ORANGE);
@@ -68,13 +80,17 @@ public class Packet {
             @Override
             public void handle(ActionEvent event) {
                 labelsContainer.getChildren().add(new Label("------------------> Packet " + i));
-                Acknowledgement acknowledgement =new Acknowledgement(i);
+                slidingFactor=(slidingFactor++)+1;
+                Acknowledgement acknowledgement =new Acknowledgement(i,count);
                 packetsContainer.add(acknowledgement.getContainer(), i, 0);
                 acknowledgement.getPt().play();
+                window.setX(-15+(slidingFactor*35));
+                slidingWindowPacketContainer.getChildren().clear();
+                slidingWindowPacketContainer.getChildren().add(window);
+
             }
         });
 //        rectangle.setOnMouseReleased(e -> pt.play());
-
 //        pt.setNode(text);
         container.getChildren().addAll(line, stack);
     }
