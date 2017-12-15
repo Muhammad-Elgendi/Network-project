@@ -5,6 +5,8 @@ import javafx.animation.PathTransition;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Point2D;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
@@ -23,25 +25,31 @@ public class Packet {
     public static GridPane packetsContainer;
     public static Pane packetWithWin;
     public static Pane slidingWindowPacketContainer;
+    public static Scene scene;
+    public static Point2D windowCoord;
+    public static Point2D sceneCoord;
+    public static int slidingFactor = -1;
     public Pane container;
     public PathTransition pt;
     public Rectangle rectangle;
     public Text text;
-    public static int slidingFactor =-1;
-    public  Rectangle window;
+    public Rectangle window;
 
-    public Packet(int i,int count) {
+    public Packet(int i, int count) {
 
         labelsContainer = Main.labelsContainer;
         packetsContainer = Main.packetsContainer;
-        packetWithWin=Main.packetWithWin;
-        slidingWindowPacketContainer=Main.slidingWindowPacketContainer;
+        packetWithWin = Main.packetWithWin;
+        slidingWindowPacketContainer = Main.slidingWindowPacketContainer;
+        scene = Main.scene;
+        windowCoord = Main.windowCoord;
+        sceneCoord = Main.sceneCoord;
         window = new Rectangle();
         window.setFill(Color.TRANSPARENT);
         window.setStroke(Color.BLACK);
         window.setY(535);
         window.setHeight(30);
-        window.setWidth((25*count)+((count-1)*10)+count);
+        window.setWidth((25 * count) + ((count - 1) * 10) + count);
         container = new Pane();
         rectangle = new Rectangle(0, 0, 25, 25);
         rectangle.setFill(Color.ORANGE);
@@ -80,11 +88,21 @@ public class Packet {
             @Override
             public void handle(ActionEvent event) {
                 labelsContainer.getChildren().add(new Label("------------------> Packet " + i));
-                slidingFactor=(slidingFactor++)+1;
-                Acknowledgement acknowledgement =new Acknowledgement(i,count);
+                slidingFactor = (slidingFactor++) + 1;
+                Acknowledgement acknowledgement = new Acknowledgement(i, count);
                 packetsContainer.add(acknowledgement.getContainer(), i, 0);
                 acknowledgement.getPt().play();
-                window.setX(-15+(slidingFactor*35));
+
+                /**
+                 * Point 2D
+                 */
+
+//                Point2D nodeCoord = acknowledgement.localToScene(0.0, 0.0);
+//                double clickX = Math.round(windowCoord.getX() + sceneCoord.getX() + nodeCoord.getX());
+//                double clickY = Math.round(windowCoord.getY() + sceneCoord.getY() + nodeCoord.getY());
+//                System.out.println(" X : "+acknowledgement.get+"Y : "+acknowledgement.getLayoutY());
+
+                window.setX(-15 + (slidingFactor * 35));
                 slidingWindowPacketContainer.getChildren().clear();
                 slidingWindowPacketContainer.getChildren().add(window);
 
@@ -107,7 +125,7 @@ public class Packet {
         return rectangle;
     }
 
-    public Text getText() {
+    public Text getTextOnPacket() {
         return text;
     }
 

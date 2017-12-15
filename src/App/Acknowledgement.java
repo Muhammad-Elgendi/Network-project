@@ -23,24 +23,24 @@ public class Acknowledgement {
     public static GridPane packetsContainer;
     public static Pane packetWithWin;
     public static Pane slidingWindowAckContainer;
-    public static int slidingFactor =-1;
+    public static int slidingFactor = -1;
     public Pane container;
     public PathTransition pt;
     public Rectangle rectangle;
     public Text text;
-    public  Rectangle window;
+    public Rectangle window;
 
-    public Acknowledgement(int i,int count) {
+    public Acknowledgement(int i, int count) {
         labelsContainer = Main.labelsContainer;
         packetsContainer = Main.packetsContainer;
-        packetWithWin=Main.packetWithWin;
-        slidingWindowAckContainer=Main.slidingWindowAckContainer;
+        packetWithWin = Main.packetWithWin;
+        slidingWindowAckContainer = Main.slidingWindowAckContainer;
         window = new Rectangle();
         window.setFill(Color.TRANSPARENT);
         window.setStroke(Color.BLACK);
         window.setY(35);
         window.setHeight(30);
-        window.setWidth((25*count)+((count-1)*10)+count);
+        window.setWidth((25 * count) + ((count - 1) * 10) + count);
         container = new Pane();
 
         rectangle = new Rectangle(0, 0, 25, 25);
@@ -69,12 +69,12 @@ public class Acknowledgement {
                 rectangle.setFill(Color.TRANSPARENT);
                 labelsContainer.getChildren().add(new Label(i + " X---------Ack------------- "));
                 pt.setPath(line);
-                Packet packet = new Packet(i,count);
-                packet.getText().setFill(Color.TRANSPARENT);
+                Packet packet = new Packet(i, count);
+                packet.getTextOnPacket().setFill(Color.TRANSPARENT);
                 packet.getRectangle().setFill(Color.TRANSPARENT);
                 packetsContainer.add(packet.getContainer(), i, 0);
                 KeyFrame mainkeyFrame = new KeyFrame(Duration.seconds(6), ev -> {
-                    packet.getText().setFill(Color.BLACK);
+                    packet.getTextOnPacket().setFill(Color.BLACK);
                     packet.getRectangle().setFill(Color.ORANGE);
                     packet.getPt().play();
                 });
@@ -87,9 +87,10 @@ public class Acknowledgement {
         pt.setOnFinished(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+
                 labelsContainer.getChildren().add(new Label(i + " Ack <---------------------"));
-                slidingFactor=(slidingFactor++)+1;
-                window.setX(-15+(slidingFactor*35));
+                slidingFactor = (slidingFactor++) + 1;
+                window.setX(-15 + (slidingFactor * 35));
                 slidingWindowAckContainer.getChildren().clear();
                 slidingWindowAckContainer.getChildren().add(window);
 

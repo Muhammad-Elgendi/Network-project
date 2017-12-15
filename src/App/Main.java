@@ -7,6 +7,7 @@ import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -14,7 +15,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Line;
-import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -25,6 +25,9 @@ public class Main extends Application {
     public static Pane packetWithWin;
     public static Pane slidingWindowPacketContainer;
     public static Pane slidingWindowAckContainer;
+    public static Scene scene;
+    public static Point2D windowCoord;
+    public static Point2D sceneCoord;
     public int i;
     public Button startButton;
     public TextField windowSizeTextField;
@@ -143,9 +146,9 @@ public class Main extends Application {
          * Set Packets View
          */
 
-        packetWithWin =new Pane();
-        slidingWindowPacketContainer =new Pane();
-        slidingWindowAckContainer =new Pane();
+        packetWithWin = new Pane();
+        slidingWindowPacketContainer = new Pane();
+        slidingWindowAckContainer = new Pane();
         packetWithWin.getChildren().add(slidingWindowPacketContainer);
         packetWithWin.getChildren().add(slidingWindowAckContainer);
         packetsContainer = new GridPane();
@@ -154,7 +157,8 @@ public class Main extends Application {
         /**
          * Packet Path and Component
          */
-
+//        windowCoord = new Point2D(startButton.getScene().getWindow().getX(), startButton.getScene().getWindow().getY());
+//        sceneCoord = new Point2D(startButton.getScene().getX(), startButton.getScene().getY());
         startButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -240,7 +244,7 @@ public class Main extends Application {
                 Sender sender = new Sender();
                 final int[] counter = {0};
                 KeyFrame mainkeyFrame = new KeyFrame(Duration.seconds(6), ev -> {
-                    sender.createNewPacket(counter[0],count);
+                    sender.createNewPacket(counter[0], count);
 //                    sender.setEventFinished(counter[0]);
 //                    sender.setEventStopped(counter[0]);
                     sender.sendPacket(counter[0]);

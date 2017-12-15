@@ -18,25 +18,26 @@ public class Sender {
     public static VBox lossPackets;
     public static GridPane packetsContainer;
     public Timeline timeline;
-    public  KeyFrame keyFrame;
-    public Sender(){
+    public KeyFrame keyFrame;
+
+    public Sender() {
         sentPackets = new VBox();
         lossPackets = new VBox();
-        acknowledgements=Receiver.acknowledgements;
-        labelsContainer=Main.labelsContainer;
+        acknowledgements = Receiver.acknowledgements;
+        labelsContainer = Main.labelsContainer;
         packetsContainer = Main.packetsContainer;
         timeline = new Timeline();
     }
 
-    public void createNewPacket(int i,int count){
-        packets.add(i,new Packet(i,count));
+    public void createNewPacket(int i, int count) {
+        packets.add(i, new Packet(i, count));
     }
 
-    public Packet getPacket(int i){
+    public Packet getPacket(int i) {
         return packets.get(i);
     }
 
-    public PathTransition getPathTranstion(int i){
+    public PathTransition getPathTranstion(int i) {
         return packets.get(i).getPt();
     }
 
@@ -61,9 +62,9 @@ public class Sender {
 //        });
 //    }
 
-    public boolean is_lost(int i){
-        for (Node object:lossPackets.getChildren()) {
-            if(Integer.parseInt( lossPackets.getChildren().get(i).getAccessibleText())==i)
+    public boolean is_lost(int i) {
+        for (Node object : lossPackets.getChildren()) {
+            if (Integer.parseInt(lossPackets.getChildren().get(i).getAccessibleText()) == i)
                 return true;
         }
         return false;
@@ -77,10 +78,10 @@ public class Sender {
 //        return false;
 //    }
 
-    public void sendPacket(int i){
+    public void sendPacket(int i) {
 //        if(!is_sent(i)) {
-            packetsContainer.add(packets.get(i).getContainer(), i, 0);
-            packets.get(i).getPt().play();
+        packetsContainer.add(packets.get(i).getContainer(), i, 0);
+        packets.get(i).getPt().play();
 //        }
     }
 
