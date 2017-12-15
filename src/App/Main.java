@@ -19,10 +19,10 @@ import javafx.scene.shape.Line;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-import java.util.ArrayList;
-
 public class Main extends Application {
 
+    public static VBox labelsContainer;
+    public static GridPane packetsContainer;
     public int i;
     public Button startButton;
     public TextField windowSizeTextField;
@@ -105,7 +105,7 @@ public class Main extends Application {
         /**
          * Labels Container
          */
-        VBox labelsContainer = new VBox();
+        labelsContainer = new VBox();
         labelsContainer.setPadding(new Insets(40, 0, 0, 0));
         labelsContainer.setSpacing(10);
         Label packetLabel = new Label("------------------> Packet 1");
@@ -141,7 +141,7 @@ public class Main extends Application {
          * Set Packets View
          */
 
-        GridPane packetsContainer = new GridPane();
+        packetsContainer = new GridPane();
         packetsContainer.setHgap(10);
 
         /**
@@ -152,8 +152,8 @@ public class Main extends Application {
             @Override
             public void handle(ActionEvent event) {
                 int count = Integer.parseInt(windowSizeTextField.getText());
-                ArrayList<Packet> packets = new ArrayList<Packet>();
-                ArrayList<Acknowledgement> acknowledgements = new ArrayList<Acknowledgement>();
+//                ArrayList<Packet> packets = new ArrayList<Packet>();
+//                ArrayList<Acknowledgement> acknowledgements = new ArrayList<Acknowledgement>();
 //                for (i = 0; i < count;i++ ) {
 //                    packets.add(new Packet());
 //                    packetsContainer.add(packets.get(i).getContainer(), i, 0);
@@ -196,40 +196,53 @@ public class Main extends Application {
 //                    }
 //                };
 //                timer.scheduleAtFixedRate(timerTask, 1000, 1000);
+//                final int[] counter = {0};
+//                Timeline timelineTimer = new Timeline(new KeyFrame(Duration.seconds(1), ev -> {
+//                    System.out.println("Second passed !");
+//                    packets.add(new Packet());
+//                    packetsContainer.add(packets.get(counter[0]).getContainer(), counter[0], 0);
+//                    packets.get(counter[0]).getPt().play();
+//                    packets.get(counter[0]).getPt().setOnFinished(new EventHandler<ActionEvent>() {
+//                        @Override
+//                        public void handle(ActionEvent event) {
+//
+//                            System.out.println("Packet Received !");
+//                            labelsContainer.getChildren().add(new Label("Packet " + counter[0]));
+//                            System.out.println(counter[0]);
+//                            acknowledgements.add(new Acknowledgement());
+//                            packetsContainer.add(acknowledgements.get(counter[0]).getContainer(), counter[0], 0);
+//                            acknowledgements.get(counter[0]).getPt().play();
+//
+//
+//                            acknowledgements.get(counter[0]).getPt().setOnFinished(new EventHandler<ActionEvent>() {
+//                                @Override
+//                                public void handle(ActionEvent event) {
+//
+//                                    labelsContainer.getChildren().add(new Label("Ack " + counter[0]));
+//                                }
+//                            });
+//                            counter[0]++;
+//                        }
+//                    });
+//
+//                }));
+//                timelineTimer.setCycleCount(count);
+//
+//                timelineTimer.play();
+
+                Sender sender = new Sender();
                 final int[] counter = {0};
-                Timeline timelineTimer = new Timeline(new KeyFrame(Duration.seconds(1), ev -> {
-                    System.out.println("Second passed !");
-                    packets.add(new Packet());
-                    packetsContainer.add(packets.get(counter[0]).getContainer(), counter[0], 0);
-                    packets.get(counter[0]).getPt().play();
-                    packets.get(counter[0]).getPt().setOnFinished(new EventHandler<ActionEvent>() {
-                        @Override
-                        public void handle(ActionEvent event) {
+                KeyFrame mainkeyFrame = new KeyFrame(Duration.seconds(6), ev -> {
+                    sender.createNewPacket(counter[0]);
+                    sender.setEventFinished(counter[0]);
+                    sender.setEventStopped(counter[0]);
+                    sender.sendPacket(counter[0]);
 
-                            System.out.println("Packet Received !");
-                            labelsContainer.getChildren().add(new Label("Packet " + counter[0]));
-                            System.out.println(counter[0]);
-                            acknowledgements.add(new Acknowledgement());
-                            packetsContainer.add(acknowledgements.get(counter[0]).getContainer(), counter[0], 0);
-                            acknowledgements.get(counter[0]).getPt().play();
-
-
-                            acknowledgements.get(counter[0]).getPt().setOnFinished(new EventHandler<ActionEvent>() {
-                                @Override
-                                public void handle(ActionEvent event) {
-
-                                    labelsContainer.getChildren().add(new Label("Ack " + counter[0]));
-                                }
-                            });
-                            counter[0]++;
-                        }
-                    });
-
-                }));
+                    counter[0]++;
+                });
+                Timeline timelineTimer = new Timeline(mainkeyFrame);
                 timelineTimer.setCycleCount(count);
                 timelineTimer.play();
-
-
             }
         });
 

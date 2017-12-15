@@ -11,9 +11,11 @@ public class Packet {
 
     public Pane container;
     public PathTransition pt;
+    public Rectangle rectangle;
+
     public Packet(){
         container =new Pane();
-        Rectangle rectangle = new Rectangle(0, 0, 25, 25);
+        rectangle = new Rectangle(0, 0, 25, 25);
         rectangle.setFill(Color.ORANGE);
         Line line =new Line();
         line.setStartX(0.0f);
@@ -28,7 +30,7 @@ public class Packet {
         pt.setNode(rectangle);
         pt.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
 //        pt.play();
-        rectangle.setOnMousePressed(e -> pt.pause());
+//        rectangle.setOnMousePressed(e -> pt.pause());
 //        rectangle.setOnMouseReleased(e -> pt.play());
         container.getChildren().addAll(line,rectangle);
     }
@@ -40,4 +42,12 @@ public class Packet {
     public PathTransition getPt(){
         return pt;
     }
+
+    public Rectangle getRectangle(){
+        return rectangle;
+    }
+
+
+
+
 }
