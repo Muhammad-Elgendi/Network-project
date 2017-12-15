@@ -23,7 +23,7 @@ public class Packet {
         line.setStroke(Color.TRANSPARENT);
 
         pt = new PathTransition();
-        pt.setDuration(Duration.millis(10000));
+        pt.setDuration(Duration.millis(3000));
         pt.setPath(line);
         pt.setNode(rectangle);
         pt.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);

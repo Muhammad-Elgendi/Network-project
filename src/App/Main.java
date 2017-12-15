@@ -1,6 +1,5 @@
 package App;
 
-import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
@@ -21,9 +20,6 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.concurrent.TimeUnit;
 
 public class Main extends Application {
 
@@ -184,30 +180,56 @@ public class Main extends Application {
 //                    });
 //                }
 
-                Timer timer = new Timer();
-                TimerTask timerTask = new TimerTask() {
-                    int counter = 0;
-                    @Override
-                    public void run() {
-                        System.out.println("Second passed !");
-                        counter++;
-                        if(counter == 6) {
-                            timer.cancel();
+//                Timer timer = new Timer();
+//                TimerTask timerTask = new TimerTask() {
+//                    int counter = 0;
+//                    @Override
+//                    public void run() {
+//                        System.out.println("Second passed !");
+//                        packets.add(new Packet());
+//                        packetsContainer.add(packets.get(counter).getContainer(), counter, 0);
+//                        packets.get(counter).getPt().play();
+//                        counter++;
+//                        if(counter == count) {
+//                            timer.cancel();
+//                        }
+//                    }
+//                };
+//                timer.scheduleAtFixedRate(timerTask, 1000, 1000);
+                final int[] counter = {0};
+                Timeline timelineTimer = new Timeline(new KeyFrame(Duration.seconds(1), ev -> {
+                    System.out.println("Second passed !");
+                    packets.add(new Packet());
+                    packetsContainer.add(packets.get(counter[0]).getContainer(), counter[0], 0);
+                    packets.get(counter[0]).getPt().play();
+                    packets.get(counter[0]).getPt().setOnFinished(new EventHandler<ActionEvent>() {
+                        @Override
+                        public void handle(ActionEvent event) {
+
+                            System.out.println("Packet Received !");
+                            labelsContainer.getChildren().add(new Label("Packet " + counter[0]));
+                            System.out.println(counter[0]);
+                            acknowledgements.add(new Acknowledgement());
+                            packetsContainer.add(acknowledgements.get(counter[0]).getContainer(), counter[0], 0);
+                            acknowledgements.get(counter[0]).getPt().play();
+
+
+                            acknowledgements.get(counter[0]).getPt().setOnFinished(new EventHandler<ActionEvent>() {
+                                @Override
+                                public void handle(ActionEvent event) {
+
+                                    labelsContainer.getChildren().add(new Label("Ack " + counter[0]));
+                                }
+                            });
+                            counter[0]++;
                         }
-                    }
+                    });
 
-                };
-                timer.scheduleAtFixedRate(timerTask, 1000, 1000);
+                }));
+                timelineTimer.setCycleCount(count);
+                timelineTimer.play();
 
-//                timer.cancel();
 
-//                packets.add(new Packet());
-//                    packetsContainer.add(packets.get(i).getContainer(), i, 0);
-//                    packets.get(i).getPt().play();
-//
-//                Timeline animation = new Timeline(
-//                        new KeyFrame(Duration.millis(1000),));
-//                animation.setCycleCount(Timeline.INDEFINITE);
             }
         });
 
