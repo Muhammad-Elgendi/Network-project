@@ -1,6 +1,5 @@
 package App;
 
-import com.sun.org.apache.regexp.internal.RE;
 import javafx.animation.KeyFrame;
 import javafx.animation.PathTransition;
 import javafx.animation.Timeline;
@@ -10,10 +9,12 @@ import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
 import javafx.util.Duration;
 
 public class Packet {
@@ -23,6 +24,7 @@ public class Packet {
     public Pane container;
     public PathTransition pt;
     public Rectangle rectangle;
+    public Text text;
 
     public Packet(int i) {
 
@@ -41,14 +43,18 @@ public class Packet {
         pt = new PathTransition();
         pt.setDuration(Duration.millis(6000));
         pt.setPath(line);
-        pt.setNode(rectangle);
-        pt.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
+        text = new Text("" + i);
+        StackPane stack = new StackPane();
+        stack.getChildren().addAll(rectangle, text);
+        pt.setNode(stack);
+
+//        pt.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
 //        pt.play();
         rectangle.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 pt.stop();
-                labelsContainer.getChildren().add(new Label("--------packet-----------X " + i));
+                labelsContainer.getChildren().add(new Label("--------Packet-----------X " + i));
                 pt.setPath(line);
                 KeyFrame mainkeyFrame = new KeyFrame(Duration.seconds(6), ev -> {
                     pt.play();
@@ -68,7 +74,9 @@ public class Packet {
             }
         });
 //        rectangle.setOnMouseReleased(e -> pt.play());
-        container.getChildren().addAll(line, rectangle);
+
+//        pt.setNode(text);
+        container.getChildren().addAll(line, stack);
     }
 
     public Pane getContainer() {
@@ -83,5 +91,8 @@ public class Packet {
         return rectangle;
     }
 
+    public Text getText() {
+        return text;
+    }
 
 }

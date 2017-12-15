@@ -1,19 +1,11 @@
 package App;
 
-import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.PathTransition;
 import javafx.animation.Timeline;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Node;
-import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.shape.Circle;
-import javafx.util.Duration;
 
 import java.util.ArrayList;
 
@@ -32,7 +24,7 @@ public class Sender {
         lossPackets = new VBox();
         acknowledgements=Receiver.acknowledgements;
         labelsContainer=Main.labelsContainer;
-        packetsContainer=Main.packetsContainer;
+        packetsContainer = Main.packetsContainer;
         timeline = new Timeline();
     }
 

@@ -7,28 +7,33 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
 import javafx.util.Duration;
 
 public class Acknowledgement {
 
     public static VBox labelsContainer;
+    public static GridPane packetsContainer;
     public Pane container;
     public PathTransition pt;
     public Rectangle rectangle;
+    public Text text;
 
-    public Acknowledgement(int i){
+    public Acknowledgement(int i) {
         labelsContainer = Main.labelsContainer;
-
-        container =new Pane();
+        packetsContainer = Main.packetsContainer;
+        container = new Pane();
 
         rectangle = new Rectangle(0, 0, 25, 25);
         rectangle.setFill(Color.GREEN);
-        Line line =new Line();
+        Line line = new Line();
         line.setStartX(0.0f);
         line.setStartY(550.0f);
         line.setEndX(0.0f);
@@ -38,17 +43,28 @@ public class Acknowledgement {
         pt = new PathTransition();
         pt.setDuration(Duration.millis(6000));
         pt.setPath(line);
-        pt.setNode(rectangle);
-        pt.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
+        text = new Text("" + i);
+        text.setFill(Color.WHITE);
+        StackPane stack = new StackPane();
+        stack.getChildren().addAll(rectangle, text);
+        pt.setNode(stack);
+//        pt.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
 //        pt.play();
         rectangle.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 pt.stop();
-                labelsContainer.getChildren().add(new Label("---------ack-------------X " + i));
+                rectangle.setFill(Color.TRANSPARENT);
+                labelsContainer.getChildren().add(new Label(i + " X---------Ack------------- "));
                 pt.setPath(line);
+                Packet packet = new Packet(i);
+                packet.getText().setFill(Color.TRANSPARENT);
+                packet.getRectangle().setFill(Color.TRANSPARENT);
+                packetsContainer.add(packet.getContainer(), i, 0);
                 KeyFrame mainkeyFrame = new KeyFrame(Duration.seconds(6), ev -> {
-                    pt.play();
+                    packet.getText().setFill(Color.BLACK);
+                    packet.getRectangle().setFill(Color.ORANGE);
+                    packet.getPt().play();
                 });
                 Timeline timelineTimer = new Timeline(mainkeyFrame);
                 timelineTimer.setCycleCount(1);
@@ -59,18 +75,18 @@ public class Acknowledgement {
         pt.setOnFinished(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                labelsContainer.getChildren().add(new Label("---------------------> Ack " + i));
+                labelsContainer.getChildren().add(new Label(i + " Ack <---------------------"));
             }
         });
 //        rectangle.setOnMouseReleased(e -> pt.play());
-        container.getChildren().addAll(line,rectangle);
+        container.getChildren().addAll(line, stack);
     }
 
-    public Pane getContainer(){
+    public Pane getContainer() {
         return container;
     }
 
-    public PathTransition getPt(){
+    public PathTransition getPt() {
         return pt;
     }
 }
