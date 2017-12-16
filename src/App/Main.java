@@ -30,7 +30,12 @@ public class Main extends Application {
     public static Point2D sceneCoord;
     public int i;
     public Button startButton;
+    public Button stopButton;
+    public TextField endToEndDelay;
+    public TextField numberOfPackets;
     public TextField windowSizeTextField;
+    public TextField packetsTimeOut;
+    public TextField acksTimeOut;
 
     public static void main(String[] args) {
         launch(args);
@@ -45,7 +50,7 @@ public class Main extends Application {
         HBox root = new HBox();
         BorderPane timeLine = new BorderPane();
         BorderPane viewer = new BorderPane();
-        viewer.setPrefWidth(700);
+        viewer.setPrefWidth(800);
         timeLine.setPrefWidth(400);
 
         /**
@@ -133,14 +138,56 @@ public class Main extends Application {
         /**
          * Upper area (Input of simulation)
          */
-        Label windowSizeLabel = new Label("Window Size : ");
+        Label windowSizeLabel = new Label("Window Size");
+        Label endToEndDelayLabel =new Label("End To End Delay");
+        Label numberOfPacketsLabel =new Label("Number Of Packets");
+        Label packetsTimeOutLabel =new Label("Sender timeout");
+        Label acksTimeOutLabel =new Label("Receiver timeout");
+
+        acksTimeOut= new TextField();
+        acksTimeOut.setPrefWidth(100);
+        packetsTimeOut =new TextField();
+        packetsTimeOut.setPrefWidth(100);
         windowSizeTextField = new TextField();
+        windowSizeTextField.setPrefWidth(100);
+        endToEndDelay = new TextField();
+        endToEndDelay.setPrefWidth(100);
+        numberOfPackets = new TextField();
+        numberOfPackets.setPrefWidth(100);
+
         startButton = new Button("Start");
+        stopButton = new Button("Stop");
+
+        VBox windowSizeBox =new VBox();
+        windowSizeBox.setAlignment(Pos.TOP_CENTER);
+        windowSizeBox.setSpacing(5);
+        windowSizeBox.getChildren().addAll(windowSizeLabel,windowSizeTextField);
+
+        VBox acksTimeOutBox =new VBox();
+        acksTimeOutBox.setAlignment(Pos.TOP_CENTER);
+        acksTimeOutBox.setSpacing(5);
+        acksTimeOutBox.getChildren().addAll(acksTimeOutLabel,acksTimeOut);
+
+        VBox packetsTimeOutBox =new VBox();
+        packetsTimeOutBox.setAlignment(Pos.TOP_CENTER);
+        packetsTimeOutBox.setSpacing(5);
+        packetsTimeOutBox.getChildren().addAll(packetsTimeOutLabel,packetsTimeOut);
+
+        VBox endToEndDelayBox =new VBox();
+        endToEndDelayBox.setAlignment(Pos.TOP_CENTER);
+        endToEndDelayBox.setSpacing(5);
+        endToEndDelayBox.getChildren().addAll(endToEndDelayLabel,endToEndDelay);
+
+        VBox numberOfPacketsBox =new VBox();
+        numberOfPacketsBox.setAlignment(Pos.TOP_CENTER);
+        numberOfPacketsBox.setSpacing(5);
+        numberOfPacketsBox.getChildren().addAll(numberOfPacketsLabel,numberOfPackets);
+
         HBox upperArea = new HBox();
-        upperArea.setAlignment(Pos.TOP_CENTER);
+        upperArea.setAlignment(Pos.BOTTOM_CENTER);
         upperArea.setPadding(new Insets(10, 0, 0, 0));
-        upperArea.setSpacing(30);
-        upperArea.getChildren().addAll(windowSizeLabel, windowSizeTextField, startButton);
+        upperArea.setSpacing(10);
+        upperArea.getChildren().addAll(windowSizeBox,numberOfPacketsBox,endToEndDelayBox,acksTimeOutBox,packetsTimeOutBox, startButton,stopButton);
 
         /**
          * Set Packets View
@@ -162,7 +209,9 @@ public class Main extends Application {
         startButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+                packetWithWin.getChildren().add(packetsContainer);
                 int count = Integer.parseInt(windowSizeTextField.getText());
+
 //                ArrayList<Packet> packets = new ArrayList<Packet>();
 //                ArrayList<Acknowledgement> acknowledgements = new ArrayList<Acknowledgement>();
 //                for (i = 0; i < count;i++ ) {
@@ -241,6 +290,11 @@ public class Main extends Application {
 //
 //                timelineTimer.play();
                 startButton.setDisable(true);
+                windowSizeTextField.setDisable(true);
+                endToEndDelay.setDisable(true);
+                numberOfPackets.setDisable(true);
+                packetsTimeOut.setDisable(true);
+                acksTimeOut.setDisable(true);
                 Sender sender = new Sender();
                 final int[] counter = {0};
                 KeyFrame mainkeyFrame = new KeyFrame(Duration.seconds(6), ev -> {
@@ -258,7 +312,19 @@ public class Main extends Application {
             }
         });
 
-        packetWithWin.getChildren().add(packetsContainer);
+
+
+        stopButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+//                packetWithWin.getChildren().clear();
+//                startButton.setDisable(false);
+//                windowSizeTextField.setDisable(false);
+//                endToEndDelay.setDisable(false);
+//                numberOfPackets.setDisable(false);
+                System.exit(0);
+            }
+        });
 
         /**
          * Viewer Component Set
@@ -272,7 +338,7 @@ public class Main extends Application {
         root.getChildren().add(timeLine);
         root.getChildren().add(viewer);
         primaryStage.setTitle("Selective Repeat");
-        primaryStage.setScene(new Scene(root, 1100, 600));
+        primaryStage.setScene(new Scene(root, 1200, 650));
         primaryStage.show();
     }
 

@@ -23,7 +23,8 @@ public class Acknowledgement {
     public static GridPane packetsContainer;
     public static Pane packetWithWin;
     public static Pane slidingWindowAckContainer;
-    public static int slidingFactor = -1;
+    public static int slidingFactor = -2;
+    public static int lastReceivedAck=0;
     public Pane container;
     public PathTransition pt;
     public Rectangle rectangle;
@@ -55,7 +56,7 @@ public class Acknowledgement {
         pt = new PathTransition();
         pt.setDuration(Duration.millis(5500));
         pt.setPath(line);
-        text = new Text("" + i);
+        text = new Text("" + (i));
         text.setFill(Color.WHITE);
         StackPane stack = new StackPane();
         stack.getChildren().addAll(rectangle, text);
@@ -67,13 +68,13 @@ public class Acknowledgement {
             public void handle(MouseEvent event) {
                 pt.stop();
                 rectangle.setFill(Color.TRANSPARENT);
-                labelsContainer.getChildren().add(new Label(i + " X---------Ack------------- "));
+                labelsContainer.getChildren().add(new Label((i) + " X---------Ack------------- "));
                 pt.setPath(line);
                 Packet packet = new Packet(i, count);
                 packet.getTextOnPacket().setFill(Color.TRANSPARENT);
                 packet.getRectangle().setFill(Color.TRANSPARENT);
                 packetsContainer.add(packet.getContainer(), i, 0);
-                KeyFrame mainkeyFrame = new KeyFrame(Duration.seconds(6), ev -> {
+                KeyFrame mainkeyFrame = new KeyFrame(Duration.seconds(12), ev -> {
                     packet.getTextOnPacket().setFill(Color.BLACK);
                     packet.getRectangle().setFill(Color.ORANGE);
                     packet.getPt().play();
@@ -88,9 +89,12 @@ public class Acknowledgement {
             @Override
             public void handle(ActionEvent event) {
 
-                labelsContainer.getChildren().add(new Label(i + " Ack <---------------------"));
+                labelsContainer.getChildren().add(new Label((i) + " Ack <---------------------"));
                 slidingFactor = (slidingFactor++) + 1;
-                window.setX(-15 + (slidingFactor * 35));
+                if(i==lastReceivedAck+1) {
+                    window.setX(-15 + (slidingFactor * 35));
+                }
+                lastReceivedAck=i;
                 slidingWindowAckContainer.getChildren().clear();
                 slidingWindowAckContainer.getChildren().add(window);
 

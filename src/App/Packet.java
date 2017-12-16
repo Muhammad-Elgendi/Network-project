@@ -29,6 +29,7 @@ public class Packet {
     public static Point2D windowCoord;
     public static Point2D sceneCoord;
     public static int slidingFactor = -1;
+    public static int lastReceivedPacket=0;
     public Pane container;
     public PathTransition pt;
     public Rectangle rectangle;
@@ -76,7 +77,7 @@ public class Packet {
                 pt.stop();
                 labelsContainer.getChildren().add(new Label("--------Packet-----------X " + i));
                 pt.setPath(line);
-                KeyFrame mainkeyFrame = new KeyFrame(Duration.seconds(6), ev -> {
+                KeyFrame mainkeyFrame = new KeyFrame(Duration.seconds(12), ev -> {
                     pt.play();
                 });
                 Timeline timelineTimer = new Timeline(mainkeyFrame);
@@ -92,17 +93,10 @@ public class Packet {
                 Acknowledgement acknowledgement = new Acknowledgement(i, count);
                 packetsContainer.add(acknowledgement.getContainer(), i, 0);
                 acknowledgement.getPt().play();
-
-                /**
-                 * Point 2D
-                 */
-
-//                Point2D nodeCoord = acknowledgement.localToScene(0.0, 0.0);
-//                double clickX = Math.round(windowCoord.getX() + sceneCoord.getX() + nodeCoord.getX());
-//                double clickY = Math.round(windowCoord.getY() + sceneCoord.getY() + nodeCoord.getY());
-//                System.out.println(" X : "+acknowledgement.get+"Y : "+acknowledgement.getLayoutY());
-
-                window.setX(-15 + (slidingFactor * 35));
+                if(i==lastReceivedPacket+1) {
+                    window.setX(-15 + (slidingFactor * 35));
+                }
+                lastReceivedPacket=i;
                 slidingWindowPacketContainer.getChildren().clear();
                 slidingWindowPacketContainer.getChildren().add(window);
 
