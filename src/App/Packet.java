@@ -31,6 +31,7 @@ public class Packet {
     public static int waitFor = 0;
     public static ArrayList<Double> positions = new ArrayList<Double>();
     public static ArrayList<Integer> packetsWinIds = new ArrayList<Integer>();
+    public static ArrayList<Integer> missedPacketsWinIds = new ArrayList<Integer>();
     public static int reminder = 0;
     public Pane container;
     public PathTransition pt;
@@ -103,10 +104,15 @@ public class Packet {
                 }
 
                 if (waitFor == i) {
+                    if (missedPacketsWinIds.contains(i))
+                        missedPacketsWinIds.clear();
                     waitFor++;
                     for (int y = waitFor; y < count; y++) {
                         if (packetsWinIds.contains(y))
-                            waitFor++;
+                            waitFor=y+1;
+                        else{
+                            missedPacketsWinIds.add(y);
+                        }
                     }
                     slidingPermission = true;
                 } else {
