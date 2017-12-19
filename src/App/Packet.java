@@ -19,6 +19,9 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
+import java.util.ArrayList;
+import java.util.Collections;
+
 public class Packet {
 
     public static VBox labelsContainer;
@@ -28,8 +31,13 @@ public class Packet {
     public static Scene scene;
     public static Point2D windowCoord;
     public static Point2D sceneCoord;
-    public static int slidingFactor = -1;
-    public static int lastReceivedPacket=0;
+    public static int slidingFactor = 0;
+    public static int lastReceivedPacket = 0;
+    public static boolean slidingPermission = false;
+    public static int waitFor = 0;
+    public static ArrayList<Double> positions = new ArrayList<Double>();
+    public static ArrayList<Integer> packetsWinIds = new ArrayList<Integer>();
+    public static int reminder = 0;
     public Pane container;
     public PathTransition pt;
     public Rectangle rectangle;
@@ -85,6 +93,10 @@ public class Packet {
                 timelineTimer.play();
             }
         });
+
+
+
+
         pt.setOnFinished(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -93,13 +105,35 @@ public class Packet {
                 Acknowledgement acknowledgement = new Acknowledgement(i, count);
                 packetsContainer.add(acknowledgement.getContainer(), i, 0);
                 acknowledgement.getPt().play();
-                if(i==lastReceivedPacket+1) {
+                positions.add(-15.0 + (slidingFactor * 35));
+                packetsWinIds.add(i);
+
+                if (waitFor == i) {
+                    waitFor++;
+                    for (int y=waitFor;y<count;y++){
+                        if (packetsWinIds.contains(y))
+                            waitFor++;
+                    }
+
+                    slidingPermission = true;
+
+                } else {
+                    slidingPermission = false;
+                }
+
+                System.out.println("Packet : " + packetsWinIds.get(reminder));
+                System.out.println("Position : " + positions.get(reminder));
+                System.out.println("Waiting for : " + waitFor);
+                System.out.println("Permission : " + slidingPermission);
+                if (slidingPermission) {
                     window.setX(-15 + (slidingFactor * 35));
                 }
-                lastReceivedPacket=i;
-                slidingWindowPacketContainer.getChildren().clear();
-                slidingWindowPacketContainer.getChildren().add(window);
-
+                reminder++;
+                lastReceivedPacket = i;
+                if (slidingPermission) {
+                    slidingWindowPacketContainer.getChildren().clear();
+                    slidingWindowPacketContainer.getChildren().add(window);
+                }
             }
         });
 //        rectangle.setOnMouseReleased(e -> pt.play());
@@ -122,5 +156,6 @@ public class Packet {
     public Text getTextOnPacket() {
         return text;
     }
+
 
 }

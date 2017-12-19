@@ -206,6 +206,8 @@ public class Main extends Application {
          */
 //        windowCoord = new Point2D(startButton.getScene().getWindow().getX(), startButton.getScene().getWindow().getY());
 //        sceneCoord = new Point2D(startButton.getScene().getX(), startButton.getScene().getY());
+//       System.out.println(stopButton.);
+
         startButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {

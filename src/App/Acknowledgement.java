@@ -23,7 +23,7 @@ public class Acknowledgement {
     public static GridPane packetsContainer;
     public static Pane packetWithWin;
     public static Pane slidingWindowAckContainer;
-    public static int slidingFactor = -2;
+    public static int slidingFactor = 0;
     public static int lastReceivedAck=0;
     public Pane container;
     public PathTransition pt;
