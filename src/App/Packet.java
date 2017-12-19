@@ -5,8 +5,6 @@ import javafx.animation.PathTransition;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.geometry.Point2D;
-import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
@@ -20,7 +18,6 @@ import javafx.scene.text.Text;
 import javafx.util.Duration;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 public class Packet {
 
@@ -28,9 +25,6 @@ public class Packet {
     public static GridPane packetsContainer;
     public static Pane packetWithWin;
     public static Pane slidingWindowPacketContainer;
-    public static Scene scene;
-    public static Point2D windowCoord;
-    public static Point2D sceneCoord;
     public static int slidingFactor = 0;
     public static int lastReceivedPacket = 0;
     public static boolean slidingPermission = false;
@@ -50,9 +44,6 @@ public class Packet {
         packetsContainer = Main.packetsContainer;
         packetWithWin = Main.packetWithWin;
         slidingWindowPacketContainer = Main.slidingWindowPacketContainer;
-        scene = Main.scene;
-        windowCoord = Main.windowCoord;
-        sceneCoord = Main.sceneCoord;
         window = new Rectangle();
         window.setFill(Color.TRANSPARENT);
         window.setStroke(Color.BLACK);
@@ -77,15 +68,17 @@ public class Packet {
         stack.getChildren().addAll(rectangle, text);
         pt.setNode(stack);
 
-//        pt.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
-//        pt.play();
         rectangle.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 pt.stop();
+                text.setFill(Color.TRANSPARENT);
+                rectangle.setFill(Color.TRANSPARENT);
                 labelsContainer.getChildren().add(new Label("--------Packet-----------X " + i));
                 pt.setPath(line);
                 KeyFrame mainkeyFrame = new KeyFrame(Duration.seconds(12), ev -> {
+                    text.setFill(Color.BLACK);
+                    rectangle.setFill(Color.ORANGE);
                     pt.play();
                 });
                 Timeline timelineTimer = new Timeline(mainkeyFrame);
@@ -93,9 +86,6 @@ public class Packet {
                 timelineTimer.play();
             }
         });
-
-
-
 
         pt.setOnFinished(new EventHandler<ActionEvent>() {
             @Override
@@ -108,23 +98,29 @@ public class Packet {
                 positions.add(-15.0 + (slidingFactor * 35));
                 packetsWinIds.add(i);
 
+                if (reminder == 0) {
+                    slidingWindowPacketContainer.getChildren().add(window);
+                }
+
                 if (waitFor == i) {
                     waitFor++;
-                    for (int y=waitFor;y<count;y++){
+                    for (int y = waitFor; y < count; y++) {
                         if (packetsWinIds.contains(y))
                             waitFor++;
                     }
-
                     slidingPermission = true;
-
                 } else {
                     slidingPermission = false;
                 }
 
-                System.out.println("Packet : " + packetsWinIds.get(reminder));
-                System.out.println("Position : " + positions.get(reminder));
-                System.out.println("Waiting for : " + waitFor);
-                System.out.println("Permission : " + slidingPermission);
+                /**
+                 * Verbose Logic parameters
+                 */
+//                System.out.println("Packet : " + packetsWinIds.get(reminder));
+//                System.out.println("Position : " + positions.get(reminder));
+//                System.out.println("Waiting for : " + waitFor);
+//                System.out.println("Permission : " + slidingPermission);
+
                 if (slidingPermission) {
                     window.setX(-15 + (slidingFactor * 35));
                 }
@@ -136,6 +132,7 @@ public class Packet {
                 }
             }
         });
+//        pt.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
 //        rectangle.setOnMouseReleased(e -> pt.play());
 //        pt.setNode(text);
         container.getChildren().addAll(line, stack);
@@ -156,6 +153,5 @@ public class Packet {
     public Text getTextOnPacket() {
         return text;
     }
-
 
 }

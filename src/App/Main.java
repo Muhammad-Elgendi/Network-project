@@ -1,13 +1,11 @@
 package App;
 
-
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
-import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -25,10 +23,6 @@ public class Main extends Application {
     public static Pane packetWithWin;
     public static Pane slidingWindowPacketContainer;
     public static Pane slidingWindowAckContainer;
-    public static Scene scene;
-    public static Point2D windowCoord;
-    public static Point2D sceneCoord;
-    public int i;
     public Button startButton;
     public Button stopButton;
     public TextField endToEndDelay;
