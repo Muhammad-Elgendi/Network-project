@@ -25,6 +25,10 @@ public class Acknowledgement {
     public static Pane slidingWindowAckContainer;
     public static int slidingFactor = 0;
     public static int lastReceivedAck=0;
+    public static int acksTimeOutInt;
+    public static int packetsTimeOutInt;
+    public static int endToEndDelayInt;
+    public static int numberOfPacketsInt;
     public Pane container;
     public PathTransition pt;
     public Rectangle rectangle;
@@ -36,6 +40,10 @@ public class Acknowledgement {
         packetsContainer = Main.packetsContainer;
         packetWithWin = Main.packetWithWin;
         slidingWindowAckContainer = Main.slidingWindowAckContainer;
+        acksTimeOutInt=Main.acksTimeOutInt;
+        packetsTimeOutInt=Main.packetsTimeOutInt;
+        endToEndDelayInt=Main.endToEndDelayInt;
+        numberOfPacketsInt=Main.numberOfPacketsInt;
         window = new Rectangle();
         window.setFill(Color.TRANSPARENT);
         window.setStroke(Color.BLACK);
@@ -54,7 +62,7 @@ public class Acknowledgement {
         line.setStroke(Color.TRANSPARENT);
 
         pt = new PathTransition();
-        pt.setDuration(Duration.millis(5500));
+        pt.setDuration(Duration.millis((endToEndDelayInt*1000)-500));
         pt.setPath(line);
         text = new Text("" + (i));
         text.setFill(Color.WHITE);
@@ -74,7 +82,7 @@ public class Acknowledgement {
                 packet.getTextOnPacket().setFill(Color.TRANSPARENT);
                 packet.getRectangle().setFill(Color.TRANSPARENT);
                 packetsContainer.add(packet.getContainer(), i, 0);
-                KeyFrame mainkeyFrame = new KeyFrame(Duration.seconds(12), ev -> {
+                KeyFrame mainkeyFrame = new KeyFrame(Duration.seconds(acksTimeOutInt), ev -> {
                     packet.getTextOnPacket().setFill(Color.BLACK);
                     packet.getRectangle().setFill(Color.ORANGE);
                     packet.getPt().play();

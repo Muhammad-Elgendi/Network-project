@@ -33,6 +33,10 @@ public class Packet {
     public static ArrayList<Integer> packetsWinIds = new ArrayList<Integer>();
     public static ArrayList<Integer> missedPacketsWinIds = new ArrayList<Integer>();
     public static int reminder = 0;
+    public static int acksTimeOutInt;
+    public static int packetsTimeOutInt;
+    public static int endToEndDelayInt;
+    public static int numberOfPacketsInt;
     public Pane container;
     public PathTransition pt;
     public Rectangle rectangle;
@@ -45,6 +49,10 @@ public class Packet {
         packetsContainer = Main.packetsContainer;
         packetWithWin = Main.packetWithWin;
         slidingWindowPacketContainer = Main.slidingWindowPacketContainer;
+        acksTimeOutInt=Main.acksTimeOutInt;
+        packetsTimeOutInt=Main.packetsTimeOutInt;
+        endToEndDelayInt=Main.endToEndDelayInt;
+        numberOfPacketsInt=Main.numberOfPacketsInt;
         window = new Rectangle();
         window.setFill(Color.TRANSPARENT);
         window.setStroke(Color.BLACK);
@@ -62,7 +70,7 @@ public class Packet {
         line.setStroke(Color.TRANSPARENT);
 
         pt = new PathTransition();
-        pt.setDuration(Duration.millis(6000));
+        pt.setDuration(Duration.seconds(endToEndDelayInt));
         pt.setPath(line);
         text = new Text("" + i);
         StackPane stack = new StackPane();
@@ -77,7 +85,7 @@ public class Packet {
                 rectangle.setFill(Color.TRANSPARENT);
                 labelsContainer.getChildren().add(new Label("--------Packet-----------X " + i));
                 pt.setPath(line);
-                KeyFrame mainkeyFrame = new KeyFrame(Duration.seconds(12), ev -> {
+                KeyFrame mainkeyFrame = new KeyFrame(Duration.seconds(packetsTimeOutInt), ev -> {
                     text.setFill(Color.BLACK);
                     rectangle.setFill(Color.ORANGE);
                     pt.play();

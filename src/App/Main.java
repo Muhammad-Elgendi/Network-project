@@ -12,7 +12,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -23,6 +25,10 @@ public class Main extends Application {
     public static Pane packetWithWin;
     public static Pane slidingWindowPacketContainer;
     public static Pane slidingWindowAckContainer;
+    public static int acksTimeOutInt;
+    public static int packetsTimeOutInt;
+    public static int endToEndDelayInt;
+    public static int numberOfPacketsInt;
     public Button startButton;
     public Button stopButton;
     public TextField endToEndDelay;
@@ -112,11 +118,29 @@ public class Main extends Application {
         labelsContainer = new VBox();
         labelsContainer.setPadding(new Insets(40, 0, 0, 0));
         labelsContainer.setSpacing(10);
-        Label packetLabel = new Label("------------------> Packet 1");
-        Label ackLabel = new Label("Ack 1 <----------------------");
-        Label packet2Label = new Label("-------------------------------X");
-        Label packet3Label = new Label("X-------------------------------");
+//        Label packetLabel = new Label("------------------> Packet 1");
+//        Label ackLabel = new Label("Ack 1 <----------------------");
+//        Label packet2Label = new Label("-------------------------------X");
+//        Label packet3Label = new Label("X-------------------------------");
 
+        /**
+         * Simulation Key
+         */
+        GridPane simKeys =new GridPane();
+        simKeys.setPadding(new Insets(2, 0, 3, 0));
+        simKeys.setAlignment(Pos.BOTTOM_CENTER);
+        simKeys.setVgap(3);
+        simKeys.setHgap(3);
+        Label key1 =new Label("Packet : ");
+        Label key2 =new Label("Ack      : ");
+        Rectangle rectangle1 = new Rectangle(0, 0, 25, 25);
+        rectangle1.setFill(Color.ORANGE);
+        Rectangle rectangle2 = new Rectangle(0, 0, 25, 25);
+        rectangle2.setFill(Color.GREEN);
+        simKeys.add(key1,0,0);
+        simKeys.add(rectangle1,1,0);
+        simKeys.add(key2,0,1);
+        simKeys.add(rectangle2,1,1);
 
         /**
          * timeline Component Set
@@ -124,6 +148,7 @@ public class Main extends Application {
         timeLine.setLeft(leftContainer);
         timeLine.setRight(rightContainer);
         timeLine.setCenter(labelsContainer);
+        timeLine.setBottom(simKeys);
 
         /**
          * Viewer Component
@@ -183,6 +208,12 @@ public class Main extends Application {
         upperArea.setSpacing(10);
         upperArea.getChildren().addAll(windowSizeBox,numberOfPacketsBox,endToEndDelayBox,acksTimeOutBox,packetsTimeOutBox, startButton,stopButton);
 
+        windowSizeTextField.setText("5");
+        acksTimeOut.setText("12");
+        packetsTimeOut.setText("12");
+        endToEndDelay.setText("6");
+        numberOfPackets.setText("10");
+
         /**
          * Set Packets View
          */
@@ -207,6 +238,12 @@ public class Main extends Application {
             public void handle(ActionEvent event) {
                 packetWithWin.getChildren().add(packetsContainer);
                 int count = Integer.parseInt(windowSizeTextField.getText());
+                acksTimeOutInt=Integer.parseInt(acksTimeOut.getText());
+                packetsTimeOutInt=Integer.parseInt(packetsTimeOut.getText());
+                numberOfPacketsInt=Integer.parseInt(numberOfPackets.getText());
+                endToEndDelayInt=Integer.parseInt(endToEndDelay.getText());
+
+
 
 //                ArrayList<Packet> packets = new ArrayList<Packet>();
 //                ArrayList<Acknowledgement> acknowledgements = new ArrayList<Acknowledgement>();
@@ -293,7 +330,7 @@ public class Main extends Application {
                 acksTimeOut.setDisable(true);
                 Sender sender = new Sender();
                 final int[] counter = {0};
-                KeyFrame mainkeyFrame = new KeyFrame(Duration.seconds(6), ev -> {
+                KeyFrame mainkeyFrame = new KeyFrame(Duration.seconds(endToEndDelayInt), ev -> {
                     sender.createNewPacket(counter[0], count);
 //                    sender.setEventFinished(counter[0]);
 //                    sender.setEventStopped(counter[0]);
@@ -303,7 +340,7 @@ public class Main extends Application {
                     counter[0]++;
                 });
                 Timeline timelineTimer = new Timeline(mainkeyFrame);
-                timelineTimer.setCycleCount(count);
+                timelineTimer.setCycleCount(numberOfPacketsInt);
                 timelineTimer.play();
             }
         });
@@ -334,7 +371,7 @@ public class Main extends Application {
         root.getChildren().add(timeLine);
         root.getChildren().add(viewer);
         primaryStage.setTitle("Selective Repeat");
-        primaryStage.setScene(new Scene(root, 1200, 650));
+        primaryStage.setScene(new Scene(root, 1200, 655));
         primaryStage.show();
     }
 
