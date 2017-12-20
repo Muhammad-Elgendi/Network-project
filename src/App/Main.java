@@ -370,6 +370,7 @@ public class Main extends Application {
          */
         root.getChildren().add(timeLine);
         root.getChildren().add(viewer);
+        root.setStyle("-fx-background-color:  #bdc3c7");
         primaryStage.setTitle("Selective Repeat");
         primaryStage.setScene(new Scene(root, 1200, 655));
         primaryStage.show();
