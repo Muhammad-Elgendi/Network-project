@@ -18,6 +18,7 @@ import javafx.scene.text.Text;
 import javafx.util.Duration;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class Packet {
 
@@ -43,6 +44,13 @@ public class Packet {
     public Text text;
     public Rectangle window;
 
+
+    /**
+     *
+     * @param i
+     * @param count
+     *
+     */
     public Packet(int i, int count) {
 
         labelsContainer = Main.labelsContainer;
@@ -83,6 +91,7 @@ public class Packet {
                 pt.stop();
                 text.setFill(Color.TRANSPARENT);
                 rectangle.setFill(Color.TRANSPARENT);
+                rectangle.setDisable(true);
                 labelsContainer.getChildren().add(new Label("--------Packet-----------X " + i));
                 pt.setPath(line);
                 KeyFrame mainkeyFrame = new KeyFrame(Duration.seconds(packetsTimeOutInt), ev -> {
@@ -95,6 +104,7 @@ public class Packet {
                 timelineTimer.play();
             }
         });
+
 
         pt.setOnFinished(new EventHandler<ActionEvent>() {
             @Override
@@ -135,9 +145,10 @@ public class Packet {
 //                System.out.println("Waiting for : " + waitFor);
 //                System.out.println("Permission : " + slidingPermission);
 
-                if (slidingPermission) {
+                if (slidingPermission ) {
                     window.setX(-15 + (slidingFactor * 35));
                 }
+
                 reminder++;
                 lastReceivedPacket = i;
                 if (slidingPermission) {

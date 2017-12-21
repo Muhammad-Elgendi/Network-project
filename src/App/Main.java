@@ -10,6 +10,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -90,7 +91,7 @@ public class Main extends Application {
         leftContainer.setAlignment(Pos.TOP_CENTER);
         leftContainer.setAlignment(Pos.TOP_CENTER);
         leftContainer.setSpacing(10);
-        leftContainer.setPadding(new Insets(10, 30, 10, 30));
+        leftContainer.setPadding(new Insets(10, 30, 10, 20));
         leftContainer.getChildren().add(Source);
         leftContainer.getChildren().add(leftLineContainer);
 
@@ -106,7 +107,7 @@ public class Main extends Application {
          * Right Container
          */
         VBox rightContainer = new VBox();
-        rightContainer.setPadding(new Insets(10, 30, 10, 30));
+        rightContainer.setPadding(new Insets(10, 20, 10, 30));
         rightContainer.setAlignment(Pos.TOP_CENTER);
         rightContainer.setSpacing(10);
         rightContainer.getChildren().add(Destination);
@@ -115,13 +116,17 @@ public class Main extends Application {
         /**
          * Labels Container
          */
+        ScrollPane scroll =new ScrollPane();
+
+        scroll.setPannable(true);
         labelsContainer = new VBox();
         labelsContainer.setPadding(new Insets(40, 0, 0, 0));
         labelsContainer.setSpacing(10);
-//        Label packetLabel = new Label("------------------> Packet 1");
-//        Label ackLabel = new Label("Ack 1 <----------------------");
-//        Label packet2Label = new Label("-------------------------------X");
-//        Label packet3Label = new Label("X-------------------------------");
+//        labelsContainer.setStyle("-fx-background-color:  #E0E0E0;");
+        scroll.setContent(labelsContainer);
+//        scroll.setStyle("-fx-background-color:  #E0E0E0;");
+//        scroll.setStyle("-fx-border-color:  transparent;");
+
 
         /**
          * Simulation Key
@@ -145,9 +150,10 @@ public class Main extends Application {
         /**
          * timeline Component Set
          */
+//        timeLine.setStyle("-fx-background-color:  #E0E0E0;");
         timeLine.setLeft(leftContainer);
         timeLine.setRight(rightContainer);
-        timeLine.setCenter(labelsContainer);
+        timeLine.setCenter(scroll);
         timeLine.setBottom(simKeys);
 
         /**
@@ -370,7 +376,7 @@ public class Main extends Application {
          */
         root.getChildren().add(timeLine);
         root.getChildren().add(viewer);
-        root.setStyle("-fx-background-color:  #bdc3c7");
+//        root.setStyle("-fx-background-color:  #E0E0E0");
         primaryStage.setTitle("Selective Repeat");
         primaryStage.setScene(new Scene(root, 1200, 655));
         primaryStage.show();
