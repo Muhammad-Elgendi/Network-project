@@ -126,6 +126,7 @@ public class Main extends Application {
         scroll.setContent(labelsContainer);
 //        scroll.setStyle("-fx-background-color:  #E0E0E0;");
 //        scroll.setStyle("-fx-border-color:  transparent;");
+        scroll.getStyleClass().add("edge-to-edge");
 
 
         /**
