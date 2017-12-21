@@ -65,7 +65,7 @@ public class Main extends Application {
         leftLine.setStartX(0.0f);
         leftLine.setStartY(0.0f);
         leftLine.setEndX(0.0f);
-        leftLine.setEndY(550.0f);
+        leftLine.setEndY(560.0f);
 
         /**
          * RightLine
@@ -74,7 +74,7 @@ public class Main extends Application {
         rightLine.setStartX(0.0f);
         rightLine.setStartY(0.0f);
         rightLine.setEndX(0.0f);
-        rightLine.setEndY(550.0f);
+        rightLine.setEndY(560.0f);
 
         /**
          * LeftLine Container
@@ -91,7 +91,7 @@ public class Main extends Application {
         leftContainer.setAlignment(Pos.TOP_CENTER);
         leftContainer.setAlignment(Pos.TOP_CENTER);
         leftContainer.setSpacing(10);
-        leftContainer.setPadding(new Insets(10, 30, 10, 20));
+        leftContainer.setPadding(new Insets(10, 30, 0, 20));
         leftContainer.getChildren().add(Source);
         leftContainer.getChildren().add(leftLineContainer);
 
@@ -107,7 +107,7 @@ public class Main extends Application {
          * Right Container
          */
         VBox rightContainer = new VBox();
-        rightContainer.setPadding(new Insets(10, 20, 10, 30));
+        rightContainer.setPadding(new Insets(10, 20, 0, 30));
         rightContainer.setAlignment(Pos.TOP_CENTER);
         rightContainer.setSpacing(10);
         rightContainer.getChildren().add(Destination);

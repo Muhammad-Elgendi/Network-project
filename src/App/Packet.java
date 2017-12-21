@@ -95,9 +95,9 @@ public class Packet {
                 labelsContainer.getChildren().add(new Label("--------Packet-----------X " + i));
                 pt.setPath(line);
                 KeyFrame mainkeyFrame = new KeyFrame(Duration.seconds(packetsTimeOutInt), ev -> {
+                    pt.play();
                     text.setFill(Color.BLACK);
                     rectangle.setFill(Color.ORANGE);
-                    pt.play();
                 });
                 Timeline timelineTimer = new Timeline(mainkeyFrame);
                 timelineTimer.setCycleCount(1);
@@ -142,7 +142,7 @@ public class Packet {
                  */
 //                System.out.println("Packet : " + packetsWinIds.get(reminder));
 //                System.out.println("Position : " + positions.get(reminder));
-//                System.out.println("Waiting for : " + waitFor);
+                System.out.println("Waiting for : " + waitFor);
 //                System.out.println("Permission : " + slidingPermission);
 
                 if (slidingPermission ) {
