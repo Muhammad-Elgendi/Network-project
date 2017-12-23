@@ -1,2 +1,2 @@
 # Network Project
-This is an simulation of Selective Repeat protocol using javaFx 8
+This is an simulation of stop and wait protocol using javaFx 8
